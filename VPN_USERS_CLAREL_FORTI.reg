@@ -1,8 +1,8 @@
 Windows Registry Editor Version 5.00
 
-[HKEY_LOCAL_MACHINE\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels]
+[HKEY_CURRENT_USER\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels]
 
-[HKEY_LOCAL_MACHINE\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\02_VPN_USERS_CLAREL]
+[HKEY_CURRENT_USER\SOFTWARE\Fortinet\FortiClient\Sslvpn\Tunnels\02_VPN_USERS_CLAREL]
 "Description"="VPN CLAREL USUARIOS"
 "Server"="vpnusers.clarel.eu:10444"
 "DATA1"=""
