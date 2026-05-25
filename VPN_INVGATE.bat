@@ -1,6 +1,22 @@
 @echo off
 setlocal enableextensions
 
+REM Usar reg.exe de 64 bits si el agente ejecuta en contexto 32 bits
+set "REG_EXE=%windir%\System32\reg.exe"
+if exist "%windir%\Sysnative\reg.exe" set "REG_EXE=%windir%\Sysnative\reg.exe"
+
+REM Clave de deteccion
+set "DETECTION_KEY=HKLM\SOFTWARE\Dia-SCCM\02_VPN_USERS_CLAREL_VDF"
+set "DETECTION_VALUE=Installed"
+
+REM 0. Comprobar si ya esta aplicado
+"%REG_EXE%" query "%DETECTION_KEY%" /v "%DETECTION_VALUE%" >nul 2>&1
+
+if %errorlevel%==0 (
+    echo La configuracion VPN ya estaba aplicada. No se ejecuta de nuevo.
+    exit /b 0
+)
+
 REM 1. URL base de GitHub RAW
 set "BASE_URL=https://raw.githubusercontent.com/NextGen-cgp/test-deploy/main"
 
@@ -25,7 +41,7 @@ if errorlevel 1 (
 )
 
 REM 6. Importar el .reg ya descargado
-reg.exe import "%REG_FILE%"
+"%REG_EXE%" import "%REG_FILE%"
 
 if errorlevel 1 (
     echo Error importando VPN_USERS_CLAREL_FORTI.reg
@@ -33,7 +49,7 @@ if errorlevel 1 (
 )
 
 REM 7. Crear clave de deteccion
-reg.exe add "HKLM\SOFTWARE\Dia-SCCM\02_VPN_USERS_CLAREL_VDF" /v Installed /t REG_SZ /d "1" /f
+"%REG_EXE%" add "%DETECTION_KEY%" /v "%DETECTION_VALUE%" /t REG_SZ /d "1" /f
 
 if errorlevel 1 (
     echo Error creando clave de deteccion
